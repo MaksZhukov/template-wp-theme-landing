@@ -120,3 +120,30 @@ add_action( 'template_redirect', function(){
 	exit( wp_redirect( home_url( '/' ) ) );
 	}
 });
+function send_mail(){
+	if (isset($_POST['form_send'])){
+		$to = get_option('admin_email');
+		$subject = "Сообщение с сайта " . home_url();
+	    $form_type = !empty($_POST['form_type']) ? $_POST['form_type'] : '';
+	    $name = !empty($_POST['name']) ? $_POST['name'] : '' ;
+	    $phone = !empty($_POST['phone']) ? $_POST['phone'] : '' ;
+	    $message = 'Форма: '.$form_type.'<br>';
+	    if ($name!=''){
+	        $message .= 'Имя: '.$name.'<br>';
+	    }
+	    if ($phone!=''){
+	        $message .= 'Телефон: '.$phone.'<br>';
+	    }
+		$attachment = '';
+		if (isset($_FILES['file_aspirant'])){
+			if ( ! function_exists( 'wp_handle_upload' ) ) {
+				require_once( ABSPATH . 'wp-admin/includes/file.php' );
+			}
+			$uploadedfile       = $_FILES['file_aspirant'];
+			$upload_overrides   = array( 'test_form' => false );
+			$file           = wp_handle_upload( $uploadedfile, $upload_overrides );
+			$attachment = $file[ 'file' ];
+		}
+		wp_mail($to,$subject,$message, '',$attachment);
+	}
+}
