@@ -6,16 +6,6 @@
  *
  * @package default
  */
-add_action( 'after_setup_theme', 'crb_load' );
-function crb_load() {
-    require_once( get_template_directory() . '/inc/carbon-fields/vendor/autoload.php' );
-    \Carbon_Fields\Carbon_Fields::boot();
-}
-
-add_action( 'carbon_fields_register_fields', 'medical_register_custom_fields' );
-function medical_register_custom_fields() {
-    require get_template_directory() . '/inc/custom-fields-options/theme-options.php';
-}
 
 if ( ! function_exists( 'default_setup' ) ) :
 	/**
